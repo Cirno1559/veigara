@@ -1,0 +1,91 @@
+package com.hxzy.biz.impl.sales;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.hxzy.biz.sales.ManufacturerBiz;
+import com.hxzy.dao.sales.ManufacturerMapper;
+import com.hxzy.entity.sales.Manufacturer;
+import com.hxzy.entity.sales.ManufacturerExample;
+import com.hxzy.entity.sales.ManufacturerExample.Criteria;
+import com.hxzy.util.PageUtil;
+@Service
+public class ManufacturerBizImpl implements ManufacturerBiz {
+	@Resource
+	ManufacturerMapper manufacturerDao;
+	@Override
+	/**
+	 * 分页查询厂商信息
+	 */
+	public void pagingQuery(PageUtil<Manufacturer> paging, Map<String, Object> map) {
+		ManufacturerExample example = new ManufacturerExample();
+		Criteria c = example.createCriteria();
+		c.andManufacturerStateEqualTo("1");//根据显示状态查询
+		example.setOffset(paging.getExclude());
+		example.setLimit(paging.getPageSize());
+		example.setOrderByClause("manufacturerAddress");//根据厂商地址排序		
+		if(map!=null) {
+			for (String   key: map.keySet()) {
+				if(key.equals("manufacturerName")) {
+					c.andManufacturerNameLike(map.get(key).toString());
+				}
+				
+			}
+		}
+		paging.setData(manufacturerDao.selectByExample(example));
+		paging.setTotalCount((int)manufacturerDao.countByExample(example));
+
+	}
+	
+	 
+	@Override
+	/**
+	 * 
+	 * 根据主键修改厂商信息
+	 *
+	 */
+	public int updateByPrimaryKeySelective(Manufacturer record) {
+		return  manufacturerDao.updateByPrimaryKeySelective(record);
+	}
+
+	@Override
+	/**
+	 * 根据条件添加厂商信息
+	 */
+	public int insertSelective(Manufacturer record) {
+		//现根据名称查询厂商信息，有结果，改变状态，否则添加
+			Manufacturer selectByName = manufacturerDao.selectByName(record.getManufacturerName());
+				if(selectByName!=null) {
+					selectByName.setManufacturerState("1");
+					selectByName.setManufacturerName(record.getManufacturerName());
+					selectByName.setManufacturerAddress(record.getManufacturerAddress());
+					selectByName.setManufacturerContent(record.getManufacturerContent());
+					return manufacturerDao.updateByPrimaryKeySelective(selectByName);		
+				}
+				return manufacturerDao.insertSelective(record);
+			}
+
+
+	@Override
+	/**
+	 * 删除信息
+	 */
+	public int delete(Manufacturer record) {
+		if(record!=null) {
+			record.setManufacturerState("0");
+		}
+		return manufacturerDao.updateByPrimaryKeySelective(record);
+	}
+
+
+	@Override
+	public Manufacturer selectByName(String ManufacturerName) {
+		
+		return manufacturerDao.selectByName(ManufacturerName);
+	}	
+	
+
+}

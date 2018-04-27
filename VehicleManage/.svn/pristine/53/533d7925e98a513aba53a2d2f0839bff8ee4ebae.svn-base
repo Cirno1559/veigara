@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.dao.workTime.TravelMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.workTime.Travel">
+    <id column="travelId" jdbcType="INTEGER" property="travelId" />
+    <result column="adminId" jdbcType="INTEGER" property="adminId" />
+    <result column="travelBegin" jdbcType="DATE" property="travelBegin" />
+    <result column="travelEnd" jdbcType="DATE" property="travelEnd" />
+    <result column="travelTotal" jdbcType="INTEGER" property="travelTotal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    travelId, adminId, travelBegin, travelEnd, travelTotal
+  </sql>
+  <select id="selectByExample" parameterType="com.hxzy.entity.workTime.TravelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from travel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from travel
+    where travelId = #{travelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from travel
+    where travelId = #{travelId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxzy.entity.workTime.TravelExample">
+    delete from travel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.workTime.Travel">
+    insert into travel (travelId, adminId, travelBegin, 
+      travelEnd, travelTotal)
+    values (#{travelId,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{travelBegin,jdbcType=DATE}, 
+      #{travelEnd,jdbcType=DATE}, #{travelTotal,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxzy.entity.workTime.Travel">
+    insert into travel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="travelId != null">
+        travelId,
+      </if>
+      <if test="adminId != null">
+        adminId,
+      </if>
+      <if test="travelBegin != null">
+        travelBegin,
+      </if>
+      <if test="travelEnd != null">
+        travelEnd,
+      </if>
+      <if test="travelTotal != null">
+        travelTotal,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="travelId != null">
+        #{travelId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="travelBegin != null">
+        #{travelBegin,jdbcType=DATE},
+      </if>
+      <if test="travelEnd != null">
+        #{travelEnd,jdbcType=DATE},
+      </if>
+      <if test="travelTotal != null">
+        #{travelTotal,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxzy.entity.workTime.TravelExample" resultType="java.lang.Long">
+    select count(*) from travel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update travel
+    <set>
+      <if test="record.travelId != null">
+        travelId = #{record.travelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.adminId != null">
+        adminId = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.travelBegin != null">
+        travelBegin = #{record.travelBegin,jdbcType=DATE},
+      </if>
+      <if test="record.travelEnd != null">
+        travelEnd = #{record.travelEnd,jdbcType=DATE},
+      </if>
+      <if test="record.travelTotal != null">
+        travelTotal = #{record.travelTotal,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update travel
+    set travelId = #{record.travelId,jdbcType=INTEGER},
+      adminId = #{record.adminId,jdbcType=INTEGER},
+      travelBegin = #{record.travelBegin,jdbcType=DATE},
+      travelEnd = #{record.travelEnd,jdbcType=DATE},
+      travelTotal = #{record.travelTotal,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.workTime.Travel">
+    update travel
+    <set>
+      <if test="adminId != null">
+        adminId = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="travelBegin != null">
+        travelBegin = #{travelBegin,jdbcType=DATE},
+      </if>
+      <if test="travelEnd != null">
+        travelEnd = #{travelEnd,jdbcType=DATE},
+      </if>
+      <if test="travelTotal != null">
+        travelTotal = #{travelTotal,jdbcType=INTEGER},
+      </if>
+    </set>
+    where travelId = #{travelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.workTime.Travel">
+    update travel
+    set adminId = #{adminId,jdbcType=INTEGER},
+      travelBegin = #{travelBegin,jdbcType=DATE},
+      travelEnd = #{travelEnd,jdbcType=DATE},
+      travelTotal = #{travelTotal,jdbcType=INTEGER}
+    where travelId = #{travelId,jdbcType=INTEGER}
+  </update>
+  <select id="findTravelRoleList" resultType="travel">
+ 	 SELECT * from travel 
+  	<where>
+  	<if test="adminId != null">
+       and  adminId=#{adminId}
+    </if>
+  	</where>
+  	LIMIT #{offset},2
+  </select>
+ <select id="findTravelRoleCount"  resultType="int">
+  	SELECT count(*) from travel 
+  	<where>
+  	<if test="adminId != null">
+       and  adminId=#{adminId}
+    </if>
+  	</where>
+  </select>
+  <select id="findAllAdminId" resultType="int">
+ 	 SELECT DISTINCT adminid FROM travel
+  </select>
+  
+  
+</mapper>

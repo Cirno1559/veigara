@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.dao.aftersales.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.aftersales.Customer">
+    <id column="customerId" jdbcType="INTEGER" property="customerId" />
+    <result column="customerName" jdbcType="VARCHAR" property="customerName" />
+    <result column="customerNo" jdbcType="VARCHAR" property="customerNo" />
+    <result column="customerPhone" jdbcType="VARCHAR" property="customerPhone" />
+    <result column="carId" jdbcType="INTEGER" property="carId" />
+    <result column="customerState" jdbcType="INTEGER" property="customerState" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    customerId, customerName, customerNo, customerPhone, carId, customerState
+  </sql>
+  <select id="selectByExample" parameterType="com.hxzy.entity.aftersales.CustomerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where customerId = #{customerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from customer
+    where customerId = #{customerId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxzy.entity.aftersales.CustomerExample">
+    delete from customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.aftersales.Customer">
+    insert into customer (customerId, customerName, customerNo, 
+      customerPhone, carId, customerState
+      )
+    values (#{customerId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{customerNo,jdbcType=VARCHAR}, 
+      #{customerPhone,jdbcType=VARCHAR}, #{carId,jdbcType=INTEGER}, #{customerState,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxzy.entity.aftersales.Customer">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        customerId,
+      </if>
+      <if test="customerName != null">
+        customerName,
+      </if>
+      <if test="customerNo != null">
+        customerNo,
+      </if>
+      <if test="customerPhone != null">
+        customerPhone,
+      </if>
+      <if test="carId != null">
+        carId,
+      </if>
+      <if test="customerState != null">
+        customerState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerNo != null">
+        #{customerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null">
+        #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="carId != null">
+        #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="customerState != null">
+        #{customerState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxzy.entity.aftersales.CustomerExample" resultType="java.lang.Long">
+    select count(*) from customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update customer
+    <set>
+      <if test="record.customerId != null">
+        customerId = #{record.customerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerName != null">
+        customerName = #{record.customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerNo != null">
+        customerNo = #{record.customerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerPhone != null">
+        customerPhone = #{record.customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carId != null">
+        carId = #{record.carId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerState != null">
+        customerState = #{record.customerState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update customer
+    set customerId = #{record.customerId,jdbcType=INTEGER},
+      customerName = #{record.customerName,jdbcType=VARCHAR},
+      customerNo = #{record.customerNo,jdbcType=VARCHAR},
+      customerPhone = #{record.customerPhone,jdbcType=VARCHAR},
+      carId = #{record.carId,jdbcType=INTEGER},
+      customerState = #{record.customerState,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.aftersales.Customer">
+    update customer
+    <set>
+      <if test="customerName != null">
+        customerName = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerNo != null">
+        customerNo = #{customerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null">
+        customerPhone = #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="carId != null">
+        carId = #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="customerState != null">
+        customerState = #{customerState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where customerId = #{customerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.aftersales.Customer">
+    update customer
+    set customerName = #{customerName,jdbcType=VARCHAR},
+      customerNo = #{customerNo,jdbcType=VARCHAR},
+      customerPhone = #{customerPhone,jdbcType=VARCHAR},
+      carId = #{carId,jdbcType=INTEGER},
+      customerState = #{customerState,jdbcType=INTEGER}
+    where customerId = #{customerId,jdbcType=INTEGER}
+  </update>
+</mapper>

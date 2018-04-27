@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.dao.sales.VehicleinfoMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.sales.Vehicleinfo">
+    <id column="vehicleInforId" jdbcType="INTEGER" property="vehicleInforId" />
+    <result column="vehicleInforVersion" jdbcType="VARCHAR" property="vehicleInforVersion" />
+    <result column="vehicleInforName" jdbcType="VARCHAR" property="vehicleInforName" />
+    <result column="vehicleInforPrice" jdbcType="INTEGER" property="vehicleInforPrice" />
+    <result column="vehicleInforState" jdbcType="VARCHAR" property="vehicleInforState" />
+    <result column="vehicleInforImage" jdbcType="VARCHAR" property="vehicleInforImage" />
+    <association property="manufacturer" javaType="com.hxzy.entity.sales.Manufacturer">
+    	<id column="manufacturerId" jdbcType="INTEGER" property="manufacturerId" />
+	    <result column="manufacturerName" jdbcType="VARCHAR" property="manufacturerName" />
+	    <result column="manufacturerAddress" jdbcType="VARCHAR" property="manufacturerAddress" />
+	    <result column="manufacturerState" jdbcType="VARCHAR" property="manufacturerState" />
+	    <result column="manufacturerContent" jdbcType="VARCHAR" property="manufacturerContent" />
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    vehicleInforId, vehicleInforVersion, vehicleInforName, vehicleInforPrice, 
+    vehicleInforState, vehicleInforImage,m.manufacturerId,m.manufacturerName,m.manufacturerAddress,m.manufacturerContent,m.manufacturerState
+  </sql>
+  <select id="selectByExample" parameterType="com.hxzy.entity.sales.VehicleinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from manufacturer m join vehicleinfo v on m.manufacturerId=v.manufacturerId
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vehicleinfo
+    where vehicleInforId = #{vehicleInforId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from vehicleinfo
+    where vehicleInforId = #{vehicleInforId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxzy.entity.sales.VehicleinfoExample">
+    delete from vehicleinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.sales.Vehicleinfo">
+    insert into vehicleinfo (vehicleInforId, vehicleInforVersion, 
+      vehicleInforName, manufacturerId, vehicleInforPrice, 
+      vehicleInforState, vehicleInforImage)
+    values (#{vehicleInforId,jdbcType=INTEGER}, #{vehicleInforVersion,jdbcType=VARCHAR}, 
+      #{vehicleInforName,jdbcType=VARCHAR}, #{manufacturerId,jdbcType=INTEGER}, #{vehicleInforPrice,jdbcType=INTEGER}, 
+      #{vehicleInforState,jdbcType=VARCHAR}, #{vehicleInforImage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxzy.entity.sales.Vehicleinfo">
+    insert into vehicleinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vehicleInforId != null">
+        vehicleInforId,
+      </if>
+      <if test="vehicleInforVersion != null">
+        vehicleInforVersion,
+      </if>
+      <if test="vehicleInforName != null">
+        vehicleInforName,
+      </if>
+      <if test="manufacturer != null">
+        m.manufacturerId,
+      </if>
+      <if test="vehicleInforPrice != null">
+        vehicleInforPrice,
+      </if>
+      <if test="vehicleInforState != null">
+        vehicleInforState,
+      </if>
+      <if test="vehicleInforImage != null">
+        vehicleInforImage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vehicleInforId != null">
+        #{vehicleInforId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInforVersion != null">
+        #{vehicleInforVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleInforName != null">
+        #{vehicleInforName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer.manufacturerId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInforPrice != null">
+        #{vehicleInforPrice,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInforState != null">
+        #{vehicleInforState,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleInforImage != null">
+        #{vehicleInforImage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxzy.entity.sales.VehicleinfoExample" resultType="java.lang.Long">
+    select count(*) from vehicleinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update vehicleinfo
+    <set>
+      <if test="record.vehicleInforId != null">
+        vehicleInforId = #{record.vehicleInforId,jdbcType=INTEGER},
+      </if>
+      <if test="record.vehicleInforVersion != null">
+        vehicleInforVersion = #{record.vehicleInforVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vehicleInforName != null">
+        vehicleInforName = #{record.vehicleInforName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manufacturerId != null">
+        manufacturerId = #{record.manufacturerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.vehicleInforPrice != null">
+        vehicleInforPrice = #{record.vehicleInforPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.vehicleInforState != null">
+        vehicleInforState = #{record.vehicleInforState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vehicleInforImage != null">
+        vehicleInforImage = #{record.vehicleInforImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update vehicleinfo
+    set vehicleInforId = #{record.vehicleInforId,jdbcType=INTEGER},
+      vehicleInforVersion = #{record.vehicleInforVersion,jdbcType=VARCHAR},
+      vehicleInforName = #{record.vehicleInforName,jdbcType=VARCHAR},
+      manufacturerId = #{record.manufacturerId,jdbcType=INTEGER},
+      vehicleInforPrice = #{record.vehicleInforPrice,jdbcType=INTEGER},
+      vehicleInforState = #{record.vehicleInforState,jdbcType=VARCHAR},
+      vehicleInforImage = #{record.vehicleInforImage,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.sales.Vehicleinfo">
+    update vehicleinfo
+    <set>
+      <if test="vehicleInforVersion != null">
+        vehicleInforVersion = #{vehicleInforVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleInforName != null">
+        vehicleInforName = #{vehicleInforName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        manufacturerId = #{manufacturer.manufacturerId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInforPrice != null">
+        vehicleInforPrice = #{vehicleInforPrice,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleInforState != null">
+        vehicleInforState = #{vehicleInforState,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleInforImage != null">
+        vehicleInforImage = #{vehicleInforImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where vehicleInforId = #{vehicleInforId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.sales.Vehicleinfo">
+    update vehicleinfo
+    set vehicleInforVersion = #{vehicleInforVersion,jdbcType=VARCHAR},
+      vehicleInforName = #{vehicleInforName,jdbcType=VARCHAR},
+      manufacturerId = #{manufacturerId,jdbcType=INTEGER},
+      vehicleInforPrice = #{vehicleInforPrice,jdbcType=INTEGER},
+      vehicleInforState = #{vehicleInforState,jdbcType=VARCHAR},
+      vehicleInforImage = #{vehicleInforImage,jdbcType=VARCHAR}
+    where vehicleInforId = #{vehicleInforId,jdbcType=INTEGER}
+  </update>
+  <!-- 根据型号查询 -->
+  <select id="selectByVersion" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+   from manufacturer m join vehicleinfo v on m.manufacturerId=v.manufacturerId
+    where vehicleInforVersion = #{vehicleInforVersion}
+  </select>
+</mapper>

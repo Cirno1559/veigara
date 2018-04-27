@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.dao.aftersales.RepairinfoMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.aftersales.Repairinfo">
+    <id column="repairinfoId" jdbcType="INTEGER" property="repairinfoId" />
+    <result column="repairinfoTime" jdbcType="DATE" property="repairinfoTime" />
+    <result column="carId" jdbcType="INTEGER" property="carId" />
+    <result column="repairinfoRaccount" jdbcType="VARCHAR" property="repairinfoRaccount" />
+    <result column="adminId" jdbcType="INTEGER" property="adminId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="repairinfoOda" jdbcType="VARCHAR" property="repairinfoOda" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    repairinfoId, repairinfoTime, carId, repairinfoRaccount, adminId, state, repairinfoOda
+  </sql>
+  <select id="selectByExample" parameterType="com.hxzy.entity.aftersales.RepairinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from repairinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from repairinfo
+    where repairinfoId = #{repairinfoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from repairinfo
+    where repairinfoId = #{repairinfoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxzy.entity.aftersales.RepairinfoExample">
+    delete from repairinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.aftersales.Repairinfo">
+    insert into repairinfo (repairinfoId, repairinfoTime, carId, 
+      repairinfoRaccount, adminId, state, 
+      repairinfoOda)
+    values (#{repairinfoId,jdbcType=INTEGER}, #{repairinfoTime,jdbcType=DATE}, #{carId,jdbcType=INTEGER}, 
+      #{repairinfoRaccount,jdbcType=VARCHAR}, #{adminId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{repairinfoOda,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxzy.entity.aftersales.Repairinfo">
+    insert into repairinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="repairinfoId != null">
+        repairinfoId,
+      </if>
+      <if test="repairinfoTime != null">
+        repairinfoTime,
+      </if>
+      <if test="carId != null">
+        carId,
+      </if>
+      <if test="repairinfoRaccount != null">
+        repairinfoRaccount,
+      </if>
+      <if test="adminId != null">
+        adminId,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="repairinfoOda != null">
+        repairinfoOda,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="repairinfoId != null">
+        #{repairinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="repairinfoTime != null">
+        #{repairinfoTime,jdbcType=DATE},
+      </if>
+      <if test="carId != null">
+        #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="repairinfoRaccount != null">
+        #{repairinfoRaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="repairinfoOda != null">
+        #{repairinfoOda,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxzy.entity.aftersales.RepairinfoExample" resultType="java.lang.Long">
+    select count(*) from repairinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update repairinfo
+    <set>
+      <if test="record.repairinfoId != null">
+        repairinfoId = #{record.repairinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repairinfoTime != null">
+        repairinfoTime = #{record.repairinfoTime,jdbcType=DATE},
+      </if>
+      <if test="record.carId != null">
+        carId = #{record.carId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repairinfoRaccount != null">
+        repairinfoRaccount = #{record.repairinfoRaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adminId != null">
+        adminId = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.repairinfoOda != null">
+        repairinfoOda = #{record.repairinfoOda,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update repairinfo
+    set repairinfoId = #{record.repairinfoId,jdbcType=INTEGER},
+      repairinfoTime = #{record.repairinfoTime,jdbcType=DATE},
+      carId = #{record.carId,jdbcType=INTEGER},
+      repairinfoRaccount = #{record.repairinfoRaccount,jdbcType=VARCHAR},
+      adminId = #{record.adminId,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      repairinfoOda = #{record.repairinfoOda,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.aftersales.Repairinfo">
+    update repairinfo
+    <set>
+      <if test="repairinfoTime != null">
+        repairinfoTime = #{repairinfoTime,jdbcType=DATE},
+      </if>
+      <if test="carId != null">
+        carId = #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="repairinfoRaccount != null">
+        repairinfoRaccount = #{repairinfoRaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adminId != null">
+        adminId = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="repairinfoOda != null">
+        repairinfoOda = #{repairinfoOda,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where repairinfoId = #{repairinfoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.aftersales.Repairinfo">
+    update repairinfo
+    set repairinfoTime = #{repairinfoTime,jdbcType=DATE},
+      carId = #{carId,jdbcType=INTEGER},
+      repairinfoRaccount = #{repairinfoRaccount,jdbcType=VARCHAR},
+      adminId = #{adminId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      repairinfoOda = #{repairinfoOda,jdbcType=VARCHAR}
+    where repairinfoId = #{repairinfoId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.dao.workTime.OvertimeMapper">
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.workTime.Overtime">
+    <id column="overTimeId" jdbcType="INTEGER" property="overTimeId" />
+    <result column="adminId" jdbcType="INTEGER" property="adminId" />
+    <result column="overTimeBegin" jdbcType="TIMESTAMP" property="overTimeBegin" />
+    <result column="overTimeEnd" jdbcType="TIMESTAMP" property="overTimeEnd" />
+    <result column="overTimeTotal" jdbcType="INTEGER" property="overTimeTotal" />
+    <result column="overTimeTypeId" jdbcType="INTEGER" property="overTimeTypeId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    overTimeId, adminId, overTimeBegin, overTimeEnd, overTimeTotal, overTimeTypeId
+  </sql>
+  <select id="selectByExample" parameterType="com.hxzy.entity.workTime.OvertimeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from overtime
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from overtime
+    where overTimeId = #{overTimeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from overtime
+    where overTimeId = #{overTimeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hxzy.entity.workTime.OvertimeExample">
+    delete from overtime
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hxzy.entity.workTime.Overtime">
+    insert into overtime (overTimeId, adminId, overTimeBegin, 
+      overTimeEnd, overTimeTotal, overTimeTypeId
+      )
+    values (#{overTimeId,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{overTimeBegin,jdbcType=TIMESTAMP}, 
+      #{overTimeEnd,jdbcType=TIMESTAMP}, #{overTimeTotal,jdbcType=INTEGER}, #{overTimeTypeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hxzy.entity.workTime.Overtime">
+    insert into overtime
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="overTimeId != null">
+        overTimeId,
+      </if>
+      <if test="adminId != null">
+        adminId,
+      </if>
+      <if test="overTimeBegin != null">
+        overTimeBegin,
+      </if>
+      <if test="overTimeEnd != null">
+        overTimeEnd,
+      </if>
+      <if test="overTimeTotal != null">
+        overTimeTotal,
+      </if>
+      <if test="overTimeTypeId != null">
+        overTimeTypeId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="overTimeId != null">
+        #{overTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="overTimeBegin != null">
+        #{overTimeBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTimeEnd != null">
+        #{overTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTimeTotal != null">
+        #{overTimeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="overTimeTypeId != null">
+        #{overTimeTypeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hxzy.entity.workTime.OvertimeExample" resultType="java.lang.Long">
+    select count(*) from overtime
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update overtime
+    <set>
+      <if test="record.overTimeId != null">
+        overTimeId = #{record.overTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.adminId != null">
+        adminId = #{record.adminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.overTimeBegin != null">
+        overTimeBegin = #{record.overTimeBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.overTimeEnd != null">
+        overTimeEnd = #{record.overTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.overTimeTotal != null">
+        overTimeTotal = #{record.overTimeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="record.overTimeTypeId != null">
+        overTimeTypeId = #{record.overTimeTypeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update overtime
+    set overTimeId = #{record.overTimeId,jdbcType=INTEGER},
+      adminId = #{record.adminId,jdbcType=INTEGER},
+      overTimeBegin = #{record.overTimeBegin,jdbcType=TIMESTAMP},
+      overTimeEnd = #{record.overTimeEnd,jdbcType=TIMESTAMP},
+      overTimeTotal = #{record.overTimeTotal,jdbcType=INTEGER},
+      overTimeTypeId = #{record.overTimeTypeId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.workTime.Overtime">
+    update overtime
+    <set>
+      <if test="adminId != null">
+        adminId = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="overTimeBegin != null">
+        overTimeBegin = #{overTimeBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTimeEnd != null">
+        overTimeEnd = #{overTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overTimeTotal != null">
+        overTimeTotal = #{overTimeTotal,jdbcType=INTEGER},
+      </if>
+      <if test="overTimeTypeId != null">
+        overTimeTypeId = #{overTimeTypeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where overTimeId = #{overTimeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.workTime.Overtime">
+    update overtime
+    set adminId = #{adminId,jdbcType=INTEGER},
+      overTimeBegin = #{overTimeBegin,jdbcType=TIMESTAMP},
+      overTimeEnd = #{overTimeEnd,jdbcType=TIMESTAMP},
+      overTimeTotal = #{overTimeTotal,jdbcType=INTEGER},
+      overTimeTypeId = #{overTimeTypeId,jdbcType=INTEGER}
+    where overTimeId = #{overTimeId,jdbcType=INTEGER}
+  </update>
+  <select id="findOverTimeInfo" resultMap="overtimeinfomap">
+		SELECT
+			o1.*,
+			o2.overTimeTypeName,
+			o2.overTimePay
+		FROM
+			overtime o1
+		INNER JOIN overtimetype o2 ON o1.overTimeTypeId = o2.overTimeTypeId
+		<where>
+		  	<if test="adminId != null">
+		       and  adminId=#{adminId}
+		    </if>
+		</where>
+		LIMIT #{offset},2
+  </select>
+  <resultMap type="com.hxzy.entity.workTime.OverTimePojo" id="overtimeinfomap">
+  	<id column="overTimeId" property="overTimeId"/>
+  	<result column="adminId" property="adminId"/>
+  	<result column="overTimeBegin" property="overTimeBegin"/>
+  	<result column="overTimeEnd" property="overTimeEnd"/>
+  	<result column="overTimeTotal" property="overTimeTotal"/>
+  	<association property="overTimeType" javaType="com.hxzy.entity.workTime.Overtimetype">
+  		<id column="overTimeTypeId" property="overTimeTypeId"/>
+  		<result column="overTimeTypeName" property="overTimeTypeName"/>
+  		<result column="overTimePay" property="overTimePay"/>
+  	</association>
+  </resultMap>
+  
+  <select id="findOverTimeCount" resultType="int">
+ 		 SELECT
+			count(*)
+		FROM
+			overtime o1
+		INNER JOIN overtimetype o2 ON o1.overTimeTypeId = o2.overTimeTypeId
+		<where>
+		  	<if test="adminId != null">
+		       and  adminId=#{adminId}
+		    </if>
+		</where>
+  </select>
+  <select id="findAllAdminId" resultType="int">
+  	SELECT DISTINCT overtime.adminId from overtime 
+  </select>
+  
+</mapper>

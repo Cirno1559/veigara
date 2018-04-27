@@ -1,0 +1,97 @@
+package com.hxzy.controller.sales;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.hxzy.biz.impl.sales.ManufacturerBizImpl;
+import com.hxzy.entity.sales.Manufacturer;
+import com.hxzy.util.PageUtil;
+
+@Controller
+@RequestMapping(value="sales/")
+public class ManufacturerController {
+	@Resource(name="manufacturerBizImpl")
+	ManufacturerBizImpl manBiz;
+	/**
+	 * 发送查询厂商的数据
+	 * @param m
+	 * @return
+	 */
+	@RequestMapping(value="manufacturerQuery")//sales/manufacturerQuery.do
+	public ModelAndView manufacturerQuery(ModelAndView m,String manufacturerName,Integer page) {
+		PageUtil<Manufacturer> paging = new PageUtil<>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(manufacturerName!=null) {//厂商名称
+			map.put("manufacturerName", "%"+manufacturerName+"%");
+			m.addObject("manufacturerName", manufacturerName);
+		}
+		if(page!=null) {
+			paging.setCurrentPage(page);
+		}
+		manBiz.pagingQuery(paging, map);
+		m.addObject("paging", paging);
+		m.setViewName("manufacturerQuery");//sales/manufacturerquery.jsp，展示查询数据
+		return m;
+		
+	}
+	/**
+	 * 删除厂商信息
+	 * @param m
+	 * @param record
+	 * @return
+	 */
+	@RequestMapping(value="manufacturerDelete")//sales/factoryDelete.do
+	public ModelAndView factoryDelete(ModelAndView m,Manufacturer record) {
+		//record里需要一个主键
+		record.setManufacturerState("0");//将状态改为0，不显示
+		int result = manBiz.updateByPrimaryKeySelective(record);
+		if(result>0) {
+			m.setViewName("redirect:manufacturerQuery");
+			return m;
+		}
+		m.setViewName("manufacturerDelete");//sales/factoryDelete.jsp
+		return m;
+		
+	}
+	/**
+	 * 根据主键修改厂商信息
+	 * @param m
+	 * @param record
+	 * @return
+	 */
+	@RequestMapping(value="manufacturerUpdate")
+	public ModelAndView manufacturerUpdate(ModelAndView m,Manufacturer record) {
+		//record 需要id,名称，地址和备注参数
+		int result = manBiz.updateByPrimaryKeySelective(record);
+		if(result>0) {
+			m.setViewName("redirect:manufacturerQuery");
+			return m;
+		}
+		m.setViewName("manufacturerUpdate");//sales/update.jsp
+		return m;
+		
+	}
+	/**
+	 * 添加厂商信息
+	 * @param m
+	 * @param record
+	 * @return
+	 */
+	@RequestMapping(value="manufacturerAdd")
+	public ModelAndView manufacturerAdd(ModelAndView m,Manufacturer record) {
+		record.setManufacturerState("1");
+		int insertSelective = manBiz.insertSelective(record);
+		if(insertSelective>0) {
+			m.setViewName("redirect:manufacturerQuery.do");
+			return m;
+		}
+		m.setViewName("manufacturerAdd");//sales/manufacturerAdd.jsp
+		return m;
+	}
+}

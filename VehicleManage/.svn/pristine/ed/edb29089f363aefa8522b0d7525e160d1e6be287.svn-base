@@ -1,0 +1,41 @@
+package com.hxzy.biz.sales;
+
+import java.util.Map;
+
+import com.hxzy.entity.sales.Manufacturer;
+import com.hxzy.util.PageUtil;
+
+public interface ManufacturerBiz {
+	/**
+	 * 分页查询厂商信息
+	 * @param paging 分页工具类
+	 * @param map 查询条件
+	 * @return
+	 */
+	public void pagingQuery(PageUtil<Manufacturer> paging,Map<String,Object>map);
+	/**
+     * 根据条件修改厂商信息
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(Manufacturer record);
+   
+    /**
+     * 根据条件添加厂商信息
+     * @param record
+     * @return
+     */
+    int insertSelective(Manufacturer record);
+    /**
+     * 根据主键删除厂商信息
+     * @param record
+     * @return
+     */
+    int delete(Manufacturer record);
+   /**
+    * 根据名称和状态（状态为1）查询厂商，厂商名称唯一
+    * @param ManufacturerName
+    * @return
+    */
+    Manufacturer selectByName(String ManufacturerName);
+}
